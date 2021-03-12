@@ -1,31 +1,32 @@
-<<<<<<< Updated upstream
-import logo from './logo.svg';
-import './App.css';
-=======
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Layout from "./components/Layout";
 import bg3 from './assets/bg3.jpeg';
->>>>>>> Stashed changes
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hello World!
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header
+        title = "This is title"
+        descr = "This is Description!"
+        />
+      <Layout 
+        title = "First block"
+        descr = "Description"
+        urlBg = {bg3}
+        />
+      <Layout 
+        title = "Second block"
+        descr = "Description"
+        colorBg = "red"
+        />
+      <Layout 
+        title = "Last block"
+        descr = "Description"
+        urlBg = {bg3}
+      />
+      <Footer />
     </div>
   );
 }
