@@ -1,5 +1,13 @@
+<<<<<<< Updated upstream
 import logo from './logo.svg';
 import './App.css';
+=======
+import "./App.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Layout from "./components/Layout";
+import bg3 from './assets/bg3.jpeg';
+>>>>>>> Stashed changes
 
 function App() {
   return (
