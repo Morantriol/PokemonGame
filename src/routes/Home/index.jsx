@@ -1,29 +1,22 @@
 import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import Layout from "../../components/Layout";
-import MenuHeader from "../../components/MenuHeader"
-import PokemonCard from "../../components/PokemonCard";
-import POKEMONS from "../../components/PokemonCard/POKEMONS.js";
 
 import bg3 from "../../assets/bg3.jpeg";
 
-import s from './style.module.css'
+// import s from "./style.module.css";
 
-const HomePage = ( {onChangePage } ) => {
-    const handleClickButton = (page) => {
-      onChangePage && onChangePage(page);
-    }
+const HomePage = ({ onChangePage }) => {
+  const handleClickButton = (page) => {
+    onChangePage && onChangePage(page);
+  };
   return (
     <>
-      <MenuHeader />
       <Header
-      title="Pokemon Game" 
-      descr="This is Description!"
-      onClickButton={handleClickButton}
+        title="Pokemon Game"
+        descr="This is Description!"
+        onClickButton={handleClickButton}
       />
-      <Layout
-      title="Introduction" 
-      urlBg={bg3}>
+      <Layout title="Introduction" urlBg={bg3}>
         <p>
           In the game two players face off against one another, one side playing
           as "blue", the other as "red" on a 3x3 grid.
@@ -35,22 +28,9 @@ const HomePage = ( {onChangePage } ) => {
         </p>
       </Layout>
       <Layout title="Cards" colorBg="HotPink">
-        <div className="flex">
-          {POKEMONS.map((item) => (
-            <PokemonCard
-              key={item.id}
-              name={item.name}
-              img={item.img}
-              type={item.type}
-              values={item.values}
-              id={item.id}
-            />
-          ))}
-        </div>
+        
       </Layout>
-      <Layout 
-      title="Full rules" 
-      urlBg={bg3}>
+      <Layout title="Full rules" urlBg={bg3}>
         <p>
           To win, a majority of the total ten cards played (including the one
           card that is not placed on the board) must be of the player's card
@@ -60,10 +40,9 @@ const HomePage = ( {onChangePage } ) => {
           opponent's card is higher than the player's card, the player's card
           will be captured and turned into the opponent's color. If the player's
           rank is higher, the opponent's card will be captured and changed into
-          the player's color instead.{" "}
+          the player's color instead.
         </p>
       </Layout>
-      <Footer />
     </>
   );
 };
