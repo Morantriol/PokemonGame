@@ -6,7 +6,7 @@ import s from "./style.module.css";
 const MENU = [
   {
     title: 'HOME',
-    to: '/welcome',
+    to: '/',
   },
   {
     title: 'GAME',
