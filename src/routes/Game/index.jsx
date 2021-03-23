@@ -1,43 +1,58 @@
-// import {useHistory} from 'react-router-dom';
-import {useState} from 'react';
+import { useState, useEffect } from "react";
 import PokemonCard from "../../components/PokemonCard";
-import POKEMONS from "../../components/PokemonCard/POKEMONS.js";
+import database from "../../service/firebase"
 
 import s from "./style.module.css";
 
-const GamePage = ( {isActive} ) => {
-  // const history = useHistory();
-  const [pokemon, setPokemons] = useState(JSON.parse(JSON.stringify(POKEMONS)));
 
-  const handleClick = (id) => {
-    const newArray = pokemon.filter(item => {
-      if (item.id === id) {
-        item.active = true;
-      }
-      return true;
-    })
+const GamePage = () => {
+  const [pokemon, setPokemons] = useState({});
 
-    setPokemons(newArray)
+  useEffect(() => {
+    database.ref('pokemons').once('value', (snapshot) => {
+      setPokemons(snapshot.val());
+    });
+  }, []);
+
+  const handleClickButton = (keyId) => {
+    const keyId = database.ref().child('pokemons').push().key;
+    database.ref('pokemons/' + keyId).update({ active: !keyId.active });
+    console.log(keyId)
   };
 
+  const clickPokemonCard = (id, key) => {
+    setPokemons(prevState => {
+      return Object.entries(prevState).reduce((acc, item) => {
+          const pokemon = {...item[1]};
+          if (pokemon.id=== id) {
+            pokemon.active = true;
+            handleClickButton(key)
+          };
+          
+          acc[item[0]] = pokemon;
+  
+          return acc;
+      }, {});
+  })};
+
   return (
-    <>
-      {/* <div className={s.gameBlock}>This is Game Page!</div>
-      <button className={s.gameBtn} onClick={handleClick}>Return on Home Page</button> */}
       <div className={s.flex}>
-          {POKEMONS.map((item) => (
+        {
+          Object.entries(pokemon).map(([key, { name, img, id, type, values, active }]) => (
             <PokemonCard
-              onClick={handleClick}
-              key={item.id}
-              name={item.name}
-              img={item.img}
-              type={item.type}
-              values={item.values}
-              id={item.id}
+              key={key}
+              keyId = {key}
+              name={name}
+              img={img}
+              id={id}
+              type={type}
+              values={values}
+              active={active}
+              clickPokemonCard= {() => clickPokemonCard(id, key)}
             />
-          ))}
-        </div>
-    </>
+          ))
+        }
+      </div>
   );
 };
 
