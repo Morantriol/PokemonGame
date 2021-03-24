@@ -1,58 +1,40 @@
-import { useState, useEffect } from "react";
-import PokemonCard from "../../components/PokemonCard";
-import database from "../../service/firebase"
-
-import s from "./style.module.css";
-
+import { useState } from 'react';
+import {useRouteMatch, Switch, Route} from 'react-router-dom'
+import { PokemonContext } from '../../context/pokemonContext';
+import BoardPage from './routes/Board';
+import FinishPage from './routes/Finish';
+import StartPage from './routes/Start';
 
 const GamePage = () => {
-  const [pokemon, setPokemons] = useState({});
+  const [selectedPokemons, setSelectedPokemons] = useState({});
 
-  useEffect(() => {
-    database.ref('pokemons').once('value', (snapshot) => {
-      setPokemons(snapshot.val());
-    });
-  }, []);
+  const match = useRouteMatch();
 
-  const handleClickButton = (keyId) => {
-    const keyId = database.ref().child('pokemons').push().key;
-    database.ref('pokemons/' + keyId).update({ active: !keyId.active });
-    console.log(keyId)
-  };
+  const handleSelectedPokemons = (key, pokemon) => {
+    setSelectedPokemons(prevState => {
+      if (prevState[key]) {
+        const copyState = {...prevState};
+        delete copyState[key];
 
-  const clickPokemonCard = (id, key) => {
-    setPokemons(prevState => {
-      return Object.entries(prevState).reduce((acc, item) => {
-          const pokemon = {...item[1]};
-          if (pokemon.id=== id) {
-            pokemon.active = true;
-            handleClickButton(key)
-          };
-          
-          acc[item[0]] = pokemon;
-  
-          return acc;
-      }, {});
-  })};
-
+        return copyState;
+      }
+      return {
+        ...prevState,
+        [key]: pokemon,
+      }
+    })
+  }
   return (
-      <div className={s.flex}>
-        {
-          Object.entries(pokemon).map(([key, { name, img, id, type, values, active }]) => (
-            <PokemonCard
-              key={key}
-              keyId = {key}
-              name={name}
-              img={img}
-              id={id}
-              type={type}
-              values={values}
-              active={active}
-              clickPokemonCard= {() => clickPokemonCard(id, key)}
-            />
-          ))
-        }
-      </div>
+    <PokemonContext.Provider value={{
+      pokemons: selectedPokemons,
+      onSelectedPokemons: handleSelectedPokemons
+    }}>
+      <Switch>
+          <Route path={`${match.path}/`} exact component={StartPage} />
+          <Route path={`${match.path}/board`} component={BoardPage} />
+          <Route path={`${match.path}/finish`} component={FinishPage} />
+      </Switch>
+    </PokemonContext.Provider>
   );
 };
 
