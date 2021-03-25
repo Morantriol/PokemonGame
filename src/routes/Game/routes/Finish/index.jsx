@@ -1,9 +1,10 @@
+
+
 const FinishPage = () => {
-    return (
-        <div>
-            This is finish page.
-        </div>
-    )
-}
+  return (
+    <div>
+        this is finish page
+    </div>
+  )};
 
 export default FinishPage;
